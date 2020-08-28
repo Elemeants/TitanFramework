@@ -1,0 +1,30 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/Users/jpolanco/.platformio/packages/toolchain-atmelavr/avr/include/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE",
+                "GCC_MEGA_AVR",
+                "__AVR_ATmega328P__"
+            ],
+            "browse": {
+                "path": [
+                    "${workspaceFolder}\\**",
+                    "C:/Users/jpolanco/.platformio/packages/toolchain-atmelavr/avr/include/**"
+                ]
+            },
+            "windowsSdkVersion": "10.0.18362.0",
+            "compilerPath": "C:/Users/jpolanco/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x86"
+        }
+    ],
+    "version": 4
+}
