@@ -1,5 +1,5 @@
 #include <avr/io.h>
-#include "portable.h"
+#include "platform.h"
 #include "gpio_driver.h"
 
 // Make API HAL to control bus I2C
@@ -9,7 +9,7 @@
 
 int main()
 {
-    GPIO_Init(&GPIOB, 0xFF);
-    GPIO_Write(&GPIOB, 0xFF);
+    GPIO_Init(GPIOB, 0xFF);
+    GPIO_Write(GPIOB, 0xFF);
     return 0;
 }

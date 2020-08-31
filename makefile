@@ -15,7 +15,7 @@ CC_OBJCOPY_FLAGS = -j .text -j .data -O ihex
 CC = avr-gcc
 CC_FLAGS = -Wall -mmcu=${MCU} -DGCC_MEGA_AVR -I${SRC_FOLDER} -Os -DF_CPU=${MCU_CLOCK} -g \
 		   -fsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
-LDFLAGS = -Wl,-Map= ${BIN_FOLDER}/$(TARGET).map,--cref -lm
+LDFLAGS = -Wl,-Map=${BIN_FOLDER}/$(TARGET).map,--cref -lm
 
 
 REMOVE = rm -f
