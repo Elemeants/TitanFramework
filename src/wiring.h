@@ -1,5 +1,5 @@
-#if !defined(PIN_WIRING_H)
-#define PIN_WIRING_H
+#if !defined(PLATFORM_WIRING_H)
+#define PLATFORM_WIRING_H
 
 #include "platform.h"
 
@@ -174,10 +174,44 @@ extern GPIO_Def_t gpio_pins[NO_DIGITAL_GPIO_PIN];
 #define I2C_SDA_PIN A5
 
 // ------------------- MCU I2C Conf -------------------
-#define EN_TWI0 1
 
-#if EN_TWI0
-#define TWI0_Register ((TWI_Handler)(0xB8))
-#endif  // !EN_TWI0
+#define TWI0_Register ((TWI_Handler)(&TWBR))
 
-#endif  // PIN_WIRING_H
+#include "drivers/i2c.h"
+
+extern I2C_BusHandler I2CBus;
+
+void I2CBus_Init();
+void I2CBus_DeInit();
+void I2CBus_SetAddress(uint8_t addr);
+void I2CBus_SetFrequency(uint32_t frec);
+uint8_t I2CBus_ReadFrom(uint8_t address, uint8_t *data, uint8_t length, uint8_t sendStop);
+uint8_t I2CBus_WriteTo(uint8_t address, uint8_t *data, uint8_t length, uint8_t wait, uint8_t sendStop);
+uint8_t I2CBus_Transmit(const uint8_t *data, uint8_t length);
+void I2CBus_AttachSlaveRxEvent(void (*function)(uint8_t *, int));
+void I2CBus_AttachSlaveTxEvent(void (*function)(void));
+void I2CBus_Reply(uint8_t ack);
+void I2CBus_Stop();
+void I2CBus_ReleaseBus();
+
+// ------------- MCU HW Interrupt Conf ----------------
+#define NO_HW_INTERRUPTS 2
+#define HW_INTERRUPT_OFFSET 0x1
+
+#define HW_INT0_PIN D2
+#define HW_INT1_PIN D3
+
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
+#define INT_ControlRegister ((volatile HW_INT_CtrlRegister_t*)(&EICRA)) 
+#define INT_EnableRegister ((volatile HW_INT_EnRegister_t*)(&EIMSK))
+
+extern HWInterrupt_Handler_t hw_isr_vectors[NO_HW_INTERRUPTS];
+
+#define NO_SW_INTERRUPTS 22
+
+#define SW_INTERRUPT_OFFSET 0x3
+extern SWInterrupt_Handler_t sw_isr_vector[NO_SW_INTERRUPTS];
+
+#endif  // PLATFORM_WIRING_H

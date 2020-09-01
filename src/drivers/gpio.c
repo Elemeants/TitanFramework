@@ -1,5 +1,5 @@
 #include "gpio.h"
-#include "pin_wiring.h"
+#include "wiring.h"
 
 void GPIO_Init(GPIO_Handler port, BaseType_t ddr_set)
 {
@@ -8,14 +8,7 @@ void GPIO_Init(GPIO_Handler port, BaseType_t ddr_set)
 
 void GPIO_InitPin(GPIO_Handler port, BaseType_t pin, uint8_t status)
 {
-    if (status == 0)
-    {
-        port->port = _clear_bit(port->port, pin);
-    }
-    else
-    {
-        port->port = _set_bit(port->port, pin);
-    }
+    status == 0 ? _clear_bit(port->ddr, pin) : _set_bit(port->ddr, pin);
 }
 
 void GPIO_Write(GPIO_Handler port, BaseType_t port_value)
@@ -25,14 +18,7 @@ void GPIO_Write(GPIO_Handler port, BaseType_t port_value)
 
 void GPIO_WritePin(GPIO_Handler port, BaseType_t pin, uint8_t value)
 {
-    if (value == 0)
-    {
-        port->port = _clear_bit(port->port, pin);
-    }
-    else
-    {
-        port->port = _set_bit(port->port, pin);
-    }
+    value == 0 ? _clear_bit(port->port, pin) : _set_bit(port->port, pin);
 }
 
 BaseType_t GPIO_Read(GPIO_Handler port)
@@ -42,7 +28,7 @@ BaseType_t GPIO_Read(GPIO_Handler port)
 
 uint8_t GPIO_ReadPin(GPIO_Handler port, BaseType_t pin)
 {
-    return port->pin & _BV(pin);
+    return _mask_bit(port->pin,pin);
 }
 
 void GPIO_PinInit(GPIO_Def_t gpio, uint8_t mode)

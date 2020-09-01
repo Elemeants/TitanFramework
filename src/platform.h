@@ -3,9 +3,10 @@
 
 #include <avr/io.h>
 #include <stdint.h>
+#include <stddef.h>
 
 // ----------------------------- [Firmware] ------------------------------
-#define FIRMWARE_VERSION "0.1.0"
+#define FIRMWARE_VERSION "0.2.0"
 
 // ----------------------------- [Platform] ------------------------------
 #ifndef F_CPU
@@ -18,10 +19,18 @@
 
 #ifndef _BV
 #define _BV(bit) (1 << bit)
-#endif  // ! _BV
+#endif // ! _BV
 
-#define _clear_bit(byte, bit) ((byte) & ~_BV((bit)))
-#define _set_bit(byte, bit) ((byte) | _BV((bit)))
+#define _clear_bits(sfr, bits) ((sfr) &= ~(bits))
+#define _set_bits(sfr, bits) ((sfr) |= (bits))
+
+#define _clear_bit(sfr, bit) ((sfr) &= ~_BV((bit)))
+#define _set_low(sfr) _clear_bit(sfr, 0)
+
+#define _set_bit(sfr, bit) ((sfr) |= _BV((bit)))
+#define _set_high(sfr) _set_bit(sfr, 0)
+
+#define _mask_bit(sfr, bit) ((sfr)&_BV(bit))
 
 #define PULL_UP 2
 #define OUTPUT 1
@@ -68,13 +77,13 @@ typedef __IO GPIO_RefControl_t *GPIO_Handler;
 #define GPIO_SPI _BV(5)
 #define GPIO_UART _BV(6)
 
-#define IS_GPIO_GENERIC(type) ((type).mask&GPIO_GENERIC)
-#define IS_GPIO_INTERRUPT(type) ((type).mask&GPIO_INTERRUPT)
-#define IS_GPIO_PWM(type) ((type).mask&GPIO_PWM)
-#define IS_GPIO_ADC(type) ((type).mask&GPIO_ADC)
-#define IS_GPIO_I2C(type) ((type).mask&GPIO_I2C)
-#define IS_GPIO_SPI(type) ((type).mask&GPIO_SPI)
-#define IS_GPIO_UART(type) ((type).mask&GPIO_UART)
+#define IS_GPIO_GENERIC(type) ((type).mask & GPIO_GENERIC)
+#define IS_GPIO_INTERRUPT(type) ((type).mask & GPIO_INTERRUPT)
+#define IS_GPIO_PWM(type) ((type).mask & GPIO_PWM)
+#define IS_GPIO_ADC(type) ((type).mask & GPIO_ADC)
+#define IS_GPIO_I2C(type) ((type).mask & GPIO_I2C)
+#define IS_GPIO_SPI(type) ((type).mask & GPIO_SPI)
+#define IS_GPIO_UART(type) ((type).mask & GPIO_UART)
 
 /**
  * @brief GPIO Pin definition config
@@ -137,7 +146,6 @@ typedef struct
 } GPIO_Def_t;
 
 // -------------------------------- [I2C] --------------------------------
-
 
 /**
  * @brief AVR I2C Register structure
@@ -262,6 +270,39 @@ typedef struct
 } TWI_RefControl_t;
 typedef __IO TWI_RefControl_t *TWI_Handler;
 
-// ------------------------------- [TIMER] -------------------------------
+// ----------------------------- [INTERRUPT] ----------------------------
 
-#endif  // HAL_DRIVER_DEFINES_H
+typedef struct
+{
+    __IO BaseType_t INT0_type : 2;
+    __IO BaseType_t INT1_type : 2;
+    __IO BaseType_t RESERVED : 4;
+} HW_INT_CtrlRegister_t;
+
+typedef struct
+{
+    __IO BaseType_t en_int0 : 1;
+    __IO BaseType_t en_int1 : 1;
+    __IO BaseType_t RESERVED : 6;
+} HW_INT_EnRegister_t;
+
+typedef struct
+{
+    uint8_t pin;
+    void (*_isrCall)(void *params);
+
+    void *params;
+    uint32_t __isr_count;
+    uint8_t __vector_num;
+} HWInterrupt_Handler_t;
+
+typedef struct
+{
+    void (*_isrCall)(void *params);
+
+    void *params;
+    uint32_t __isr_count;
+    uint8_t __vector_num;
+} SWInterrupt_Handler_t;
+
+#endif // HAL_DRIVER_DEFINES_H

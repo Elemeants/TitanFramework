@@ -1,8 +1,6 @@
 #if !defined(GPIO_DRIVER_H)
 #define GPIO_DRIVER_H
 
-#include <avr/io.h>
-
 #include "platform.h"
 
 // ---------------------- Base abstract functions ----------------------

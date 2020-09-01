@@ -1,7 +1,7 @@
 #if !defined(TITAN_HAL_H)
 #define TITAN_HAL_H
 
-#include "pin_wiring.h"
+#include "wiring.h"
 #include "platform.h"
 
 #include "drivers/gpio.h"

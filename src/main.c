@@ -1,7 +1,5 @@
 #include <avr/io.h>
-#include "platform.h"
-#include "drivers/gpio.h"
-#include "drivers/i2c.h"
+#include "titan.h"
 
 // Make API HAL to control bus UART
 // Make API HAL to control bus SPI

@@ -1,5 +1,5 @@
-MCU = atmega328p
-MCU_CLOCK = 8000000UL
+MCU = atmega32
+MCU_CLOCK = 16000000UL
 
 BIN_FOLDER = ./bin
 OBJ_FOLDER = ./obj
@@ -34,7 +34,7 @@ MSG_SYMBOL_TABLE = Creating Symbol Table:
 MSG_LINKING = Linking:
 MSG_COMPILING = Compiling:
 MSG_ASSEMBLING = Assembling:
-MSG_CLEANING = Cleaning project:
+MSG_CLEANING = Cleaning project...
 
 # Help functions
 rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
@@ -44,7 +44,7 @@ CC_LIB_INC_FLAG = ${addprefix -L,${LIB_INC_FOLDERS}}
 SRC =  ${sort $(call rwildcard,${SRC_FOLDER}/,*.c)}
 OBJ = ${SRC:.c=.o}
 
-build: begin gccversion ${TARGET}.hex finished program_size end
+build: begin gccversion clean ${TARGET}.hex finished program_size end
 
 begin:
 	@echo $(MSG_BEGIN)
