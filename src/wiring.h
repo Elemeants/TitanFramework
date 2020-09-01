@@ -188,7 +188,7 @@ void I2CBus_SetFrequency(uint32_t frec);
 uint8_t I2CBus_ReadFrom(uint8_t address, uint8_t *data, uint8_t length, uint8_t sendStop);
 uint8_t I2CBus_WriteTo(uint8_t address, uint8_t *data, uint8_t length, uint8_t wait, uint8_t sendStop);
 uint8_t I2CBus_Transmit(const uint8_t *data, uint8_t length);
-void I2CBus_AttachSlaveRxEvent(void (*function)(uint8_t *, int));
+void I2CBus_AttachSlaveRxEvent(void (*function)(uint8_t len));
 void I2CBus_AttachSlaveTxEvent(void (*function)(void));
 void I2CBus_Reply(uint8_t ack);
 void I2CBus_Stop();
@@ -204,12 +204,14 @@ void I2CBus_ReleaseBus();
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#define INT_ControlRegister ((volatile HW_INT_CtrlRegister_t*)(&EICRA)) 
-#define INT_EnableRegister ((volatile HW_INT_EnRegister_t*)(&EIMSK))
+#define INT_ControlRegister ((volatile HW_INT_CtrlRegister_t*)(0x69)) 
+#define INT_EnableRegister ((volatile HW_INT_EnRegister_t*)(0x1D))
 
 extern HWInterrupt_Handler_t hw_isr_vectors[NO_HW_INTERRUPTS];
 
-#define NO_SW_INTERRUPTS 22
+uint8_t index_isr_vector(uint8_t __vector_num);
+
+#define NO_SW_INTERRUPTS 10
 
 #define SW_INTERRUPT_OFFSET 0x3
 extern SWInterrupt_Handler_t sw_isr_vector[NO_SW_INTERRUPTS];

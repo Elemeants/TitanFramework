@@ -1,8 +1,8 @@
 #include "wiring.h"
 
-#include <avr/io.h>
-#include <avr/interrupt.h>
 #include "drivers/gpio.h"
+#include "utils/loop_utils.h"
+
 
 #define __HW_INTERRUPT_DEF(__pin, __vector) \
     {                                       \
@@ -28,28 +28,29 @@ HWInterrupt_Handler_t hw_isr_vectors[NO_HW_INTERRUPTS] = {
     }
 
 SWInterrupt_Handler_t sw_isr_vector[NO_SW_INTERRUPTS] = {
-    __SW_INTERRUPT_DEF(PCINT0_vect_num),
-    __SW_INTERRUPT_DEF(PCINT1_vect_num),
-    __SW_INTERRUPT_DEF(PCINT2_vect_num),
-    __SW_INTERRUPT_DEF(WDT_vect_num),
-    __SW_INTERRUPT_DEF(TIMER2_COMPA_vect_num),
-    __SW_INTERRUPT_DEF(TIMER2_COMPB_vect_num),
     __SW_INTERRUPT_DEF(TIMER2_OVF_vect_num),
     __SW_INTERRUPT_DEF(TIMER1_CAPT_vect_num),
     __SW_INTERRUPT_DEF(TIMER1_COMPA_vect_num),
     __SW_INTERRUPT_DEF(TIMER1_COMPB_vect_num),
     __SW_INTERRUPT_DEF(TIMER1_OVF_vect_num),
-    __SW_INTERRUPT_DEF(TIMER0_COMPA_vect_num),
-    __SW_INTERRUPT_DEF(TIMER0_COMPB_vect_num),
     __SW_INTERRUPT_DEF(TIMER0_OVF_vect_num),
     __SW_INTERRUPT_DEF(SPI_STC_vect_num),
-    __SW_INTERRUPT_DEF(USART_RX_vect_num),
     __SW_INTERRUPT_DEF(USART_UDRE_vect_num),
-    __SW_INTERRUPT_DEF(USART_TX_vect_num),
     __SW_INTERRUPT_DEF(ADC_vect_num),
-    __SW_INTERRUPT_DEF(EE_READY_vect_num),
-    __SW_INTERRUPT_DEF(ANALOG_COMP_vect_num),
-    __SW_INTERRUPT_DEF(TWI_vect_num)};
+    __SW_INTERRUPT_DEF(TWI_vect_num),
+};
+
+uint8_t index_isr_vector(uint8_t __vector_num)
+{
+    for_in_range(uint8_t, _index, 0, NO_SW_INTERRUPTS)
+    {
+        if (sw_isr_vector[_index].__vector_num == __vector_num)
+        {
+            return _index;
+        }
+    }
+    return -1;
+}
 
 static void sw_isr_wrapper(uint8_t __vector_num)
 {
@@ -57,7 +58,11 @@ static void sw_isr_wrapper(uint8_t __vector_num)
     {
         return;
     }
-    SWInterrupt_Handler_t *handler = &sw_isr_vector[__vector_num - SW_INTERRUPT_OFFSET];
+    uint8_t index = index_isr_vector(__vector_num);
+    if (index == (uint8_t)-1) {
+        return;
+    }
+    SWInterrupt_Handler_t *handler = &sw_isr_vector[index];
     handler->__isr_count++;
     if (handler->_isrCall)
         handler->_isrCall(handler->params);
@@ -79,22 +84,6 @@ const char *ISR_VectorNumName(uint8_t __vec_num)
 {
     switch (__vec_num)
     {
-    case INT0_vect_num:
-        return "INT0_vect";
-    case INT1_vect_num:
-        return "INT0_vect";
-    case PCINT0_vect_num:
-        return "PCINT0_vect";
-    case PCINT1_vect_num:
-        return "PCINT1_vect";
-    case PCINT2_vect_num:
-        return "PCINT2_vect";
-    case WDT_vect_num:
-        return "WDT_vect";
-    case TIMER2_COMPA_vect_num:
-        return "TIMER2_COMPA_vect";
-    case TIMER2_COMPB_vect_num:
-        return "TIMER2_COMPB_vect";
     case TIMER2_OVF_vect_num:
         return "TIMER2_OVF_vect";
     case TIMER1_CAPT_vect_num:
@@ -105,26 +94,14 @@ const char *ISR_VectorNumName(uint8_t __vec_num)
         return "TIMER1_COMPB_vect";
     case TIMER1_OVF_vect_num:
         return "TIMER1_OVF_vect";
-    case TIMER0_COMPA_vect_num:
-        return "TIMER0_COMPA_vect";
-    case TIMER0_COMPB_vect_num:
-        return "TIMER0_COMPB_vect";
     case TIMER0_OVF_vect_num:
         return "TIMER0_OVF_vect";
     case SPI_STC_vect_num:
         return "SPI_STC_vect";
-    case USART_RX_vect_num:
-        return "USART_RX_vect";
     case USART_UDRE_vect_num:
         return "USART_UDRE_vect";
-    case USART_TX_vect_num:
-        return "USART_TX_vect";
     case ADC_vect_num:
         return "ADC_vect";
-    case EE_READY_vect_num:
-        return "EE_READY_vect";
-    case ANALOG_COMP_vect_num:
-        return "ANALOG_COMP_vect";
     case TWI_vect_num:
         return "TWI_vect";
     }
@@ -146,27 +123,15 @@ const char *ISR_VectorNumName(uint8_t __vec_num)
 HW_ISR_Wrapper(INT0_vect_num);
 HW_ISR_Wrapper(INT1_vect_num);
 
-SW_ISR_Wrapper(PCINT0_vect_num);
-SW_ISR_Wrapper(PCINT1_vect_num);
-SW_ISR_Wrapper(PCINT2_vect_num);
-SW_ISR_Wrapper(WDT_vect_num);
-SW_ISR_Wrapper(TIMER2_COMPA_vect_num);
-SW_ISR_Wrapper(TIMER2_COMPB_vect_num);
 SW_ISR_Wrapper(TIMER2_OVF_vect_num);
 SW_ISR_Wrapper(TIMER1_CAPT_vect_num);
 SW_ISR_Wrapper(TIMER1_COMPA_vect_num);
 SW_ISR_Wrapper(TIMER1_COMPB_vect_num);
 SW_ISR_Wrapper(TIMER1_OVF_vect_num);
-SW_ISR_Wrapper(TIMER0_COMPA_vect_num);
-SW_ISR_Wrapper(TIMER0_COMPB_vect_num);
 SW_ISR_Wrapper(TIMER0_OVF_vect_num);
 SW_ISR_Wrapper(SPI_STC_vect_num);
-SW_ISR_Wrapper(USART_RX_vect_num);
 SW_ISR_Wrapper(USART_UDRE_vect_num);
-SW_ISR_Wrapper(USART_TX_vect_num);
 SW_ISR_Wrapper(ADC_vect_num);
-SW_ISR_Wrapper(EE_READY_vect_num);
-SW_ISR_Wrapper(ANALOG_COMP_vect_num);
 SW_ISR_Wrapper(TWI_vect_num);
 
 #undef SW_ISR_Wrapper
@@ -174,7 +139,6 @@ SW_ISR_Wrapper(TWI_vect_num);
 
 HWInterrupt_Handler_t *ISR_PinToHandler(uint8_t pin)
 {
-    HWInterrupt_Handler_t hdl;
     switch (pin)
     {
     case HW_INT0_PIN:
@@ -184,30 +148,33 @@ HWInterrupt_Handler_t *ISR_PinToHandler(uint8_t pin)
         return &hw_isr_vectors[1];
 
     default:
-        return &hdl;
+        return NULL;
     }
 }
 
-static void ISR_INT0_Init(uint8_t mode){
+static void ISR_INT0_Init(uint8_t mode)
+{
     GPIO_PinMode(HW_INT0_PIN, INPUT);
     INT_ControlRegister->INT0_type = mode;
     INT_EnableRegister->en_int0 = 0b1;
 }
-static void ISR_INT1_Init(uint8_t mode){
+static void ISR_INT1_Init(uint8_t mode)
+{
     GPIO_PinMode(HW_INT1_PIN, INPUT);
     INT_ControlRegister->INT1_type = mode;
     INT_EnableRegister->en_int1 = 0b1;
 }
 
-static void ISR_INT0_DeInit(){
+static void ISR_INT0_DeInit()
+{
     INT_ControlRegister->INT0_type = 0b00;
     INT_EnableRegister->en_int0 = 0b0;
 }
-static void ISR_INT1_DeInit(){
+static void ISR_INT1_DeInit()
+{
     INT_ControlRegister->INT1_type = 0b00;
     INT_EnableRegister->en_int1 = 0b0;
 }
-
 
 void ISR_hw_deinit(uint8_t pin)
 {

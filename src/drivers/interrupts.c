@@ -13,6 +13,7 @@ void ISR_hw_attach(uint8_t pin_num, void (*isr_call)(void *params), void *params
         return;
     }
     HWInterrupt_Handler_t *handler = ISR_PinToHandler(pin_num);
+    if (handler == NULL) { return; }
     handler->params = params;
     handler->_isrCall = isr_call;
     ISR_hw_init(pin_num, isrMode);
@@ -24,6 +25,7 @@ void ISR_hw_deattach(uint8_t pin_num)
         return;
     }
     HWInterrupt_Handler_t *handler = ISR_PinToHandler(pin_num);
+    if (handler == NULL) { return; }
     handler->_isrCall = NULL;
     handler->params = NULL;
     ISR_hw_deinit(pin_num);
@@ -35,7 +37,11 @@ void ISR_sw_attach(uint8_t __vec_num, void (*isr_call)(void *params), void *para
     {
         return;
     }
-    SWInterrupt_Handler_t *handler = &sw_isr_vector[__vec_num - SW_INTERRUPT_OFFSET];
+    uint8_t index = index_isr_vector(__vec_num);
+    if (index == (uint8_t)-1) {
+        return;
+    }
+    SWInterrupt_Handler_t *handler = &sw_isr_vector[index];
     handler->params = params;
     handler->_isrCall = isr_call;
 }
@@ -45,7 +51,11 @@ void ISR_sw_deattach(uint8_t __vec_num)
     {
         return;
     }
-    SWInterrupt_Handler_t *handler = &sw_isr_vector[__vec_num - SW_INTERRUPT_OFFSET];
+    uint8_t index = index_isr_vector(__vec_num);
+    if (index == (uint8_t)-1) {
+        return;
+    }
+    SWInterrupt_Handler_t *handler = &sw_isr_vector[index];
     handler->params = NULL;
     handler->_isrCall = NULL;
 }

@@ -1,4 +1,5 @@
 MCU = atmega32
+MCU_FLAG = __AVR_ATmega328P__
 MCU_CLOCK = 16000000UL
 
 BIN_FOLDER = ./bin
@@ -14,7 +15,7 @@ CC_OBJCOPY_FLAGS = -j .text -j .data -O ihex
 
 CC = avr-gcc
 CC_FLAGS = -Wall -mmcu=${MCU} -DGCC_MEGA_AVR -I${SRC_FOLDER} -Os -DF_CPU=${MCU_CLOCK} -g \
-		   -fsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
+		   -fsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -D${MCU_FLAG}
 LDFLAGS = -Wl,-Map=${BIN_FOLDER}/$(TARGET).map,--cref -lm
 
 REMOVE = rm -f
@@ -44,7 +45,7 @@ CC_LIB_INC_FLAG = ${addprefix -L,${LIB_INC_FOLDERS}}
 SRC =  ${sort $(call rwildcard,${SRC_FOLDER}/,*.c)}
 OBJ = ${SRC:.c=.o}
 
-build: begin gccversion clean ${TARGET}.hex finished program_size end
+build: begin gccversion ${TARGET}.hex finished program_size end
 
 begin:
 	@echo $(MSG_BEGIN)

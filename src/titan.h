@@ -4,8 +4,8 @@
 #include "wiring.h"
 #include "platform.h"
 
+#include "drivers/interrupts.h"
 #include "drivers/gpio.h"
-#include "drivers/i2c.h"
 
 extern void delay_ms();
 extern void delay_us();
