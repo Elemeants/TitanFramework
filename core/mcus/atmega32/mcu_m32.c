@@ -8,29 +8,41 @@
 
 // Arduino boards compatibility constants
 GPIO_Def_t gpio_pins[NO_GPIO_PIN] = {
-    __GPIO_DEF(GPIOD, 0, GPIO_GENERIC | GPIO_UART),                  // Digital 0 - RX UART
-    __GPIO_DEF(GPIOD, 1, GPIO_GENERIC | GPIO_UART),                  // Digital 1 - TX UART
-    __GPIO_DEF(GPIOD, 2, GPIO_GENERIC | GPIO_INTERRUPT),             // Digital 2 - INT0
-    __GPIO_DEF(GPIOD, 3, GPIO_GENERIC | GPIO_INTERRUPT | GPIO_PWM),  // Digital 3 - INT1 - PWM
-    __GPIO_DEF(GPIOD, 4, GPIO_GENERIC),                              // Digital 4
-    __GPIO_DEF(GPIOD, 5, GPIO_GENERIC),                              // Digital 5 - PWM
-    __GPIO_DEF(GPIOD, 6, GPIO_GENERIC | GPIO_PWM),                   // Digital 6 - PWM
-    __GPIO_DEF(GPIOD, 7, GPIO_GENERIC),                              // Digital 7
+    __GPIO_DEF(GPIOD, 0, GPIO_GENERIC | GPIO_UART),       // Digital 0 - RX UART
+    __GPIO_DEF(GPIOD, 1, GPIO_GENERIC | GPIO_UART),       // Digital 1 - TX UART
+    __GPIO_DEF(GPIOD, 2, GPIO_GENERIC | GPIO_INTERRUPT),  // Digital 2 - INT0
+    __GPIO_DEF(GPIOD, 3, GPIO_GENERIC | GPIO_INTERRUPT),  // Digital 3 - INT1
+    __GPIO_DEF(GPIOD, 4, GPIO_GENERIC),                   // Digital 4
+    __GPIO_DEF(GPIOD, 5, GPIO_GENERIC),                   // Digital 5
+    __GPIO_DEF(GPIOD, 6, GPIO_GENERIC),                   // Digital 6
+    __GPIO_DEF(GPIOD, 7, GPIO_GENERIC),                   // Digital 7
 
-    __GPIO_DEF(GPIOB, 0, GPIO_GENERIC),                        // Digital 8
-    __GPIO_DEF(GPIOB, 1, GPIO_GENERIC | GPIO_PWM),             // Digital 9 - PWM
-    __GPIO_DEF(GPIOB, 2, GPIO_GENERIC | GPIO_PWM | GPIO_SPI),  // Digital 10 - PWM - SS
-    __GPIO_DEF(GPIOB, 3, GPIO_GENERIC | GPIO_PWM | GPIO_SPI),  // Digital 11 - MOSI
-    __GPIO_DEF(GPIOB, 4, GPIO_GENERIC | GPIO_SPI),             // Digital 12 - MISO
-    __GPIO_DEF(GPIOB, 6, GPIO_GENERIC | GPIO_SPI),             // Digital 13 - SCK
+    __GPIO_DEF(GPIOC, 0, GPIO_GENERIC | GPIO_I2C),  // Digital 8 - SCL
+    __GPIO_DEF(GPIOC, 1, GPIO_GENERIC | GPIO_I2C),  // Digital 9 - SDA
+    __GPIO_DEF(GPIOC, 2, GPIO_GENERIC),             // Digital 10 
+    __GPIO_DEF(GPIOC, 3, GPIO_GENERIC),             // Digital 11
+    __GPIO_DEF(GPIOC, 4, GPIO_GENERIC),             // Digital 12
+    __GPIO_DEF(GPIOC, 5, GPIO_GENERIC),             // Digital 13
+    __GPIO_DEF(GPIOC, 6, GPIO_GENERIC),             // Digital 14
+    __GPIO_DEF(GPIOC, 7, GPIO_GENERIC),             // Digital 15
 
-    __GPIO_DEF(GPIOC, 0, GPIO_GENERIC | GPIO_ADC),  // Analog 0 - Digital 14
-    __GPIO_DEF(GPIOC, 1, GPIO_GENERIC | GPIO_ADC),  // Analog 1 - Digital 15
-    __GPIO_DEF(GPIOC, 2, GPIO_GENERIC | GPIO_ADC),  // Analog 2 - Digital 16
-    __GPIO_DEF(GPIOC, 3, GPIO_GENERIC | GPIO_ADC),  // Analog 3 - Digital 17
+    __GPIO_DEF(GPIOB, 0, GPIO_GENERIC),                   // Digital 16
+    __GPIO_DEF(GPIOB, 1, GPIO_GENERIC),                   // Digital 17
+    __GPIO_DEF(GPIOB, 2, GPIO_GENERIC | GPIO_INTERRUPT),  // Digital 18
+    __GPIO_DEF(GPIOB, 3, GPIO_GENERIC),                   // Digital 19
+    __GPIO_DEF(GPIOB, 4, GPIO_GENERIC | GPIO_SPI),        // Digital 20 - SS
+    __GPIO_DEF(GPIOB, 5, GPIO_GENERIC | GPIO_SPI),        // Digital 21 - MOSI
+    __GPIO_DEF(GPIOB, 6, GPIO_GENERIC | GPIO_SPI),        // Digital 22 - MISO
+    __GPIO_DEF(GPIOB, 7, GPIO_GENERIC | GPIO_SPI),        // Digital 23 - SCK
 
-    __GPIO_DEF(GPIOC, 4, GPIO_GENERIC | GPIO_ADC | GPIO_I2C),  // Analog 4 - Digital 18 - SDA
-    __GPIO_DEF(GPIOC, 5, GPIO_GENERIC | GPIO_ADC | GPIO_I2C),  // Analog 5 - Digital 19 - SCL
+    __GPIO_DEF(GPIOA, 0, GPIO_GENERIC | GPIO_ADC),  // Analog 0 - Digital 24
+    __GPIO_DEF(GPIOA, 1, GPIO_GENERIC | GPIO_ADC),  // Analog 1 - Digital 25
+    __GPIO_DEF(GPIOA, 2, GPIO_GENERIC | GPIO_ADC),  // Analog 2 - Digital 26
+    __GPIO_DEF(GPIOA, 3, GPIO_GENERIC | GPIO_ADC),  // Analog 3 - Digital 27
+    __GPIO_DEF(GPIOA, 4, GPIO_GENERIC | GPIO_ADC),  // Analog 4 - Digital 28
+    __GPIO_DEF(GPIOA, 5, GPIO_GENERIC | GPIO_ADC),  // Analog 5 - Digital 29
+    __GPIO_DEF(GPIOA, 6, GPIO_GENERIC | GPIO_ADC),  // Analog 5 - Digital 30
+    __GPIO_DEF(GPIOA, 7, GPIO_GENERIC | GPIO_ADC),  // Analog 5 - Digital 31
 };
 
 HWInterrupt_Handler_t hw_isr_vectors[NO_HW_INTERRUPTS] = {

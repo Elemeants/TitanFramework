@@ -1,21 +1,22 @@
 #include <avr/io.h>
+
 #include "titan.h"
 
-#define LED_BUILDINT A1
+#define LED_BUILDINT A0
 
 // Make API HAL to control bus UART
 // Make API HAL to control bus SPI
 
 int main()
 {
-    I2C_Init(&I2CBus);
-    I2C_SetAddress(&I2CBus, 0x11);
-    GPIO_Init(GPIOA, 0xFF);
-    while(1) {
-        GPIO_Write(GPIOA, 0xFF);
-        delay_ms(500);
-        GPIO_Write(GPIOA, 0x00);
-        delay_ms(500);
+    GPIO_InitPin(GPIOB, 0, OUTPUT);
+    GPIO_InitPin(GPIOA, 0, OUTPUT);
+
+    while (1)
+    {
+        GPIO_WritePin(GPIOB, 0, GPIO_DigitalRead(LED_BUILDINT));
+        GPIO_DigitalToggle(LED_BUILDINT);
+        delay_ms(100);
     }
     return 0;
 }

@@ -55,7 +55,7 @@ typedef struct
     /**
      * @brief GPIO PIN read input register
      */
-    __I BaseType_t pin;
+    __IO BaseType_t pin;
 
     /**
      * @brief GPIO DDR port config register
@@ -65,7 +65,7 @@ typedef struct
     /**
      * @brief GPIO PORT write config register
      */
-    __O BaseType_t port;
+    __IO BaseType_t port;
 } GPIO_RefControl_t;
 typedef __IO GPIO_RefControl_t *GPIO_Handler;
 
