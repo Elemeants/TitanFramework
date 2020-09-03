@@ -4,6 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
+                "${workspaceFolder}/core/**",
+                "${workspaceFolder}/src/**",
                 "C:/Users/jpolanco/.platformio/packages/toolchain-atmelavr/avr/include/**"
             ],
             "defines": [
@@ -11,7 +13,7 @@
                 "UNICODE",
                 "_UNICODE",
                 "GCC_MEGA_AVR",
-                "__AVR_ATmega328P__"
+                "__AVR_ATmega32__"
             ],
             "browse": {
                 "path": [

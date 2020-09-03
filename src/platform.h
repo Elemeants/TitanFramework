@@ -10,7 +10,7 @@
 
 // ----------------------------- [Platform] ------------------------------
 #ifndef F_CPU
-#define F_CPU 16000000UL
+#define F_CPU 8000000UL
 #endif
 
 #define __IO volatile
@@ -278,13 +278,6 @@ typedef struct
     __IO BaseType_t INT1_type : 2;
     __IO BaseType_t RESERVED : 4;
 } HW_INT_CtrlRegister_t;
-
-typedef struct
-{
-    __IO BaseType_t en_int0 : 1;
-    __IO BaseType_t en_int1 : 1;
-    __IO BaseType_t RESERVED : 6;
-} HW_INT_EnRegister_t;
 
 typedef struct
 {

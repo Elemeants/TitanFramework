@@ -2,6 +2,7 @@
 #define GPIO_DRIVER_H
 
 #include "platform.h"
+#include "wiring.h"
 
 // ---------------------- Base abstract functions ----------------------
 

@@ -7,7 +7,7 @@
 #include "drivers/interrupts.h"
 #include "drivers/gpio.h"
 
-extern void delay_ms();
-extern void delay_us();
+extern void delay_ms(uint32_t _ms);
+extern void delay_us(uint32_t _us);
 
 #endif // TITAN_HAL_H

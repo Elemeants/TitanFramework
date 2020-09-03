@@ -1,5 +1,4 @@
 #include "gpio.h"
-#include "wiring.h"
 
 void GPIO_Init(GPIO_Handler port, BaseType_t ddr_set)
 {
@@ -48,20 +47,20 @@ uint8_t GPIO_PinRead(GPIO_Def_t gpio)
 
 void GPIO_PinMode(uint8_t pin, uint8_t mode)
 {
-    if (pin >= NO_DIGITAL_GPIO_PIN) { return; }
+    if (pin >= NO_GPIO_PIN) { return; }
     GPIO_PinInit(gpio_pins[pin], mode);
 }
 void GPIO_DigitalWrite(uint8_t pin, uint8_t value)
 {
-    if (pin >= NO_DIGITAL_GPIO_PIN) { return; }
+    if (pin >= NO_GPIO_PIN) { return; }
     GPIO_PinWrite(gpio_pins[pin], value);
 }
 uint8_t GPIO_DigitalRead(uint8_t pin)
 {
-    if (pin >= NO_DIGITAL_GPIO_PIN) { return (uint8_t)-1; }
+    if (pin >= NO_GPIO_PIN) { return (uint8_t)-1; }
     return GPIO_PinRead(gpio_pins[pin]);
 }
 void GPIO_PWMWrite(uint8_t pin, uint16_t value)
 {
-    if (pin >= NO_DIGITAL_GPIO_PIN || !IS_GPIO_PWM(gpio_pins[pin].gpio_type)) { return; }
+    if (pin >= NO_GPIO_PIN || !IS_GPIO_PWM(gpio_pins[pin].gpio_type)) { return; }
 }
