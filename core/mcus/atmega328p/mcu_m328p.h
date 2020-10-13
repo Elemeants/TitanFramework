@@ -158,13 +158,6 @@ extern "C" {
 
 typedef struct
 {
-    __IO BaseType_t INT0_type : 2;
-    __IO BaseType_t INT1_type : 2;
-    __IO BaseType_t RESERVED : 4;
-} HW_INT_CtrlRegister_t;
-
-typedef struct
-{
     __IO BaseType_t en_int0 : 1;
     __IO BaseType_t en_int1 : 1;
     __IO BaseType_t RESERVED : 6;

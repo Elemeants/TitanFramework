@@ -218,6 +218,14 @@ extern "C" {
 #define HW_INT1_PIN D3
 #define HW_INT2_PIN D18
 
+typedef struct
+{
+    __IO BaseType_t en_int0 : 1;
+    __IO BaseType_t en_int1 : 1;
+    __IO BaseType_t en_int2 : 1;
+    __IO BaseType_t RESERVED : 5;
+} HW_INT_EnRegister_t;
+
 #define INT_ControlRegister ((volatile HW_INT_CtrlRegister_t*)(0x69))
 #define INT_EnableRegister ((volatile HW_INT_EnRegister_t*)(0x1D))
 
@@ -225,14 +233,6 @@ void ISR_INT0_Init(uint8_t mode);
 void ISR_INT1_Init(uint8_t mode);
 void ISR_INT0_DeInit();
 void ISR_INT1_DeInit();
-
-typedef struct
-{
-    __IO BaseType_t en_int0 : 1;
-    __IO BaseType_t en_int1 : 1;
-    __IO BaseType_t en_int2 : 1;
-    __IO BaseType_t RESERVED : 6;
-} HW_INT_EnRegister_t;
 
 #endif
 
