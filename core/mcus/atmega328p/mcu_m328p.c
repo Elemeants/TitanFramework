@@ -1,5 +1,7 @@
 #include "mcu_m328p.h"
 
+#ifdef __AVR_ATmega328P__
+
 #include <drivers/gpio.h>
 #include <utils/loop_utils.h>
 
@@ -159,3 +161,5 @@ void ISR_hw_init(uint8_t pin, uint8_t mode)
     }
     sei();
 }
+
+#endif

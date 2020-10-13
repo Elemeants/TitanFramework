@@ -3,6 +3,12 @@
 
 #include "platform.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif // !__cplusplus
+
+#ifdef __AVR_ATmega328P__
+
 #define NO_GPIO_PIN 20
 
 /**
@@ -142,7 +148,6 @@
  */
 #define I2C_SDA_PIN A5
 
-
 // ------------- MCU HW Interrupt Conf ----------------
 #define NO_HW_INTERRUPTS 3
 #define NO_SW_INTERRUPTS 10
@@ -165,7 +170,7 @@ typedef struct
     __IO BaseType_t RESERVED : 6;
 } HW_INT_EnRegister_t;
 
-#define INT_ControlRegister ((volatile HW_INT_CtrlRegister_t*)(0x69)) 
+#define INT_ControlRegister ((volatile HW_INT_CtrlRegister_t*)(0x69))
 #define INT_EnableRegister ((volatile HW_INT_EnRegister_t*)(0x1D))
 
 void ISR_INT0_Init(uint8_t mode);
@@ -173,4 +178,10 @@ void ISR_INT1_Init(uint8_t mode);
 void ISR_INT0_DeInit();
 void ISR_INT1_DeInit();
 
-#endif // MCUS_WIRING_328P_H
+#endif
+
+#ifdef __cplusplus
+}
+#endif // !__cplusplus
+
+#endif  // MCUS_WIRING_328P_H

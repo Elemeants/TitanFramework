@@ -1,11 +1,15 @@
 #if !defined(TITAN_WIRING_H)
 #define TITAN_WIRING_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif // !__cplusplus
+
 #include "platform.h"
 #ifdef __AVR_ATmega328P__
-#include "core/mcus/atmega328p/mcu_m328p.h"
+#include "mcus/atmega328p/mcu_m328p.h"
 #elif __AVR_ATmega32__
-#include "core/mcus/atmega32/mcu_m32.h"
+#include "mcus/atmega32/mcu_m32.h"
 #endif
 
 // ------------------- MCU Ports macros -------------------
@@ -69,5 +73,8 @@ void I2CBus_Reply(uint8_t ack);
 void I2CBus_Stop();
 void I2CBus_ReleaseBus();
 
+#ifdef __cplusplus
+}
+#endif // !__cplusplus
 
 #endif  // TITAN_WIRING_H

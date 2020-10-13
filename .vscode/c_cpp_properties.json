@@ -6,7 +6,8 @@
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/core/**",
                 "${workspaceFolder}/src/**",
-                "C:/Users/jpolanco/.platformio/packages/toolchain-atmelavr/avr/include/**"
+                "C:/Users/Jdany/.platformio/packages/toolchain-atmelavr/avr/include/**",
+                "${workspaceFolder}/core"
             ],
             "defines": [
                 "_DEBUG",
@@ -22,9 +23,9 @@
                 ]
             },
             "windowsSdkVersion": "10.0.18362.0",
-            "compilerPath": "C:/Users/jpolanco/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
+            "compilerPath": "C:\\Users\\Jdany\\.platformio\\packages\\toolchain-atmelavr\\bin/avr-gcc.exe",
             "cStandard": "c11",
-            "cppStandard": "c++17",
+            "cppStandard": "c++11",
             "intelliSenseMode": "gcc-x86"
         },
         {

@@ -3,6 +3,12 @@
 
 #include "platform.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif // !__cplusplus
+
+#ifdef __AVR_ATmega32__
+
 #define NO_DIGITAL_PINS 24
 #define NO_ANALOG_PINS 8
 #define NO_GPIO_PIN (NO_DIGITAL_PINS + NO_ANALOG_PINS)
@@ -212,7 +218,7 @@
 #define HW_INT1_PIN D3
 #define HW_INT2_PIN D18
 
-#define INT_ControlRegister ((volatile HW_INT_CtrlRegister_t*)(0x69)) 
+#define INT_ControlRegister ((volatile HW_INT_CtrlRegister_t*)(0x69))
 #define INT_EnableRegister ((volatile HW_INT_EnRegister_t*)(0x1D))
 
 void ISR_INT0_Init(uint8_t mode);
@@ -228,4 +234,10 @@ typedef struct
     __IO BaseType_t RESERVED : 6;
 } HW_INT_EnRegister_t;
 
-#endif // MCUS_WIRING_32_H
+#endif
+
+#ifdef __cplusplus
+}
+#endif // !__cplusplus
+
+#endif  // MCUS_WIRING_32_H

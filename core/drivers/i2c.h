@@ -3,6 +3,10 @@
 
 #include "platform.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif // !__cplusplus
+
 #define I2C_BUS_ID 0x01
 
 #ifndef I2C_BUS_FREQ
@@ -111,5 +115,9 @@ void I2C_txEventHandler(I2C_BusHandler *bus);
 
 void I2C_ISR_Call(void *params);
 void I2C_ISR_Handler(I2C_BusHandler *bus);
+
+#ifdef __cplusplus
+}
+#endif // !__cplusplus
 
 #endif  // I2C_DRIVER_H

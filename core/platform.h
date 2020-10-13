@@ -5,8 +5,12 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif // !__cplusplus
+
 // ----------------------------- [Firmware] ------------------------------
-#define FIRMWARE_VERSION "0.2.0"
+#define FIRMWARE_VERSION "0.4.0"
 
 // ----------------------------- [Platform] ------------------------------
 #ifndef F_CPU
@@ -297,5 +301,9 @@ typedef struct
     uint32_t __isr_count;
     uint8_t __vector_num;
 } SWInterrupt_Handler_t;
+
+#ifdef __cplusplus
+}
+#endif // !__cplusplus
 
 #endif // HAL_DRIVER_DEFINES_H

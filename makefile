@@ -56,6 +56,9 @@ CC_LIB_INC_FLAG = ${addprefix -I,${LIB_INC_FOLDERS}} -I./
 SRC =  ${sort $(call rwildcard,${SRC_FOLDER}/,*.c)} ${WIRING_MCU}
 OBJ = ${SRC:.c=.o}
 
+deprectated:
+	$(error This makefile is useless because the project is now setting up by cmake)
+
 build: begin gccversion ${TARGET}.hex finished program_size end
 
 fuse:

@@ -4,6 +4,10 @@
 #include <avr/interrupt.h>
 #include "platform.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif // !__cplusplus
+
 extern const char *ISR_VectorNumName(uint8_t __vec_num);
 extern HWInterrupt_Handler_t *ISR_PinToHandler(uint8_t pin);
 
@@ -20,5 +24,9 @@ void ISR_hw_deattach(uint8_t pin_num);
 
 void ISR_sw_attach(uint8_t __vec_num, void (*isr_call)(void *params), void *params);
 void ISR_sw_deattach(uint8_t __vec_num);
+
+#ifdef __cplusplus
+}
+#endif // !__cplusplus
 
 #endif // _INTERRUPT_DRIVER_H

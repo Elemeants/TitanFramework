@@ -4,6 +4,10 @@
 #include "platform.h"
 #include "wiring.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif // !__cplusplus
+
 // ---------------------- Base abstract functions ----------------------
 
 void GPIO_Init(GPIO_Handler port, BaseType_t ddr_set);
@@ -27,5 +31,10 @@ void GPIO_DigitalWrite(uint8_t pin, uint8_t value);
 uint8_t GPIO_DigitalRead(uint8_t pin);
 void GPIO_DigitalToggle(uint8_t gpio);
 void GPIO_PWMWrite(uint8_t pin, uint16_t value);
+
+#ifdef __cplusplus
+}
+#endif // !__cplusplus
+
 
 #endif  // GPIO_DRIVER_H

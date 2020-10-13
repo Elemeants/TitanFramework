@@ -1,5 +1,7 @@
 #include "mcu_m32.h"
 
+#ifdef __AVR_ATmega32__
+
 #include <drivers/gpio.h>
 #include <utils/loop_utils.h>
 
@@ -19,7 +21,7 @@ GPIO_Def_t gpio_pins[NO_GPIO_PIN] = {
 
     __GPIO_DEF(GPIOC, 0, GPIO_GENERIC | GPIO_I2C),  // Digital 8 - SCL
     __GPIO_DEF(GPIOC, 1, GPIO_GENERIC | GPIO_I2C),  // Digital 9 - SDA
-    __GPIO_DEF(GPIOC, 2, GPIO_GENERIC),             // Digital 10 
+    __GPIO_DEF(GPIOC, 2, GPIO_GENERIC),             // Digital 10
     __GPIO_DEF(GPIOC, 3, GPIO_GENERIC),             // Digital 11
     __GPIO_DEF(GPIOC, 4, GPIO_GENERIC),             // Digital 12
     __GPIO_DEF(GPIOC, 5, GPIO_GENERIC),             // Digital 13
@@ -173,3 +175,5 @@ ISR(SPI_STC_vect) { sw_isr_wrapper(SPI_STC_vect_num); }
 ISR(USART_UDRE_vect) { sw_isr_wrapper(USART_UDRE_vect_num); }
 ISR(ADC_vect) { sw_isr_wrapper(ADC_vect_num); }
 ISR(TWI_vect) { sw_isr_wrapper(TWI_vect_num); }
+
+#endif
