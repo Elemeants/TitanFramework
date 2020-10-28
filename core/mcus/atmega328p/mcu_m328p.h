@@ -28,7 +28,7 @@ extern "C"
  * @brief Number of digital pins in the microcontroller
  * 
  */
-#define NO_DIGITAL_PINS 13
+#define NO_DIGITAL_PINS 14
 /**
  * @brief Number of analog pins in the microcontroller
  * 

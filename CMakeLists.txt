@@ -20,7 +20,7 @@ set(CMAKE_CXX_COMPILER ${AVR_CXX})
 # Project specific microcontroller settings
 ##########################################################################
 set(MCU_SPEED 1000000)
-set(MCU_TYPE atmega32)
+set(MCU_TYPE atmega328p)
 set(MCU_PROGRAMMER usbasp)
 set(MCU_LFUSE 0xE4)
 set(MCU_HFUSE 0xD1)

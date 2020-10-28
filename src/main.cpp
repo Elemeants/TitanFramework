@@ -8,11 +8,11 @@
 int main()
 {
     pinMode(LED_BUILDINT, OUTPUT);
-    pinMode(D16, OUTPUT);
+    pinMode(D2, OUTPUT);
 
     while (1)
     {
-        digitalWrite(D16, digitalRead(LED_BUILDINT));
+        digitalWrite(D2, digitalRead(LED_BUILDINT));
         digitalToggle(LED_BUILDINT);
         delay_ms(100);
     }
