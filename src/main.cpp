@@ -7,13 +7,13 @@
 
 int main()
 {
-    GPIO_PinMode(LED_BUILDINT, OUTPUT);
-    GPIO_PinMode(D16, OUTPUT);
+    pinMode(LED_BUILDINT, OUTPUT);
+    pinMode(D16, OUTPUT);
 
     while (1)
     {
-        GPIO_DigitalWrite(D16, GPIO_DigitalRead(LED_BUILDINT));
-        GPIO_DigitalToggle(LED_BUILDINT);
+        digitalWrite(D16, digitalRead(LED_BUILDINT));
+        digitalToggle(LED_BUILDINT);
         delay_ms(100);
     }
     return 0;

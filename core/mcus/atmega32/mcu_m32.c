@@ -2,12 +2,6 @@
 
 #ifdef __AVR_ATmega32__
 
-#include <drivers/gpio.h>
-#include <utils/loop_utils.h>
-
-#include "../mcu_common.h"
-#include "wiring.h"
-
 // Arduino boards compatibility constants
 GPIO_Def_t gpio_pins[NO_GPIO_PIN] = {
     __GPIO_DEF(GPIOD, 0, GPIO_GENERIC | GPIO_UART),       // Digital 0 - RX UART
@@ -96,13 +90,13 @@ const char *ISR_VectorNumName(uint8_t __vec_num)
 
 void ISR_INT0_Init(uint8_t mode)
 {
-    GPIO_PinMode(HW_INT0_PIN, INPUT);
+    pinMode(HW_INT0_PIN, INPUT);
     INT_ControlRegister->INT0_type = mode;
     INT_EnableRegister->en_int0 = 0b1;
 }
 void ISR_INT1_Init(uint8_t mode)
 {
-    GPIO_PinMode(HW_INT1_PIN, INPUT);
+    pinMode(HW_INT1_PIN, INPUT);
     INT_ControlRegister->INT1_type = mode;
     INT_EnableRegister->en_int1 = 0b1;
 }

@@ -40,7 +40,7 @@ project(TitanCore VERSION 0.4.0)
 ##########################################################################
 # Project source
 ##########################################################################
-set(TITAN_CORE_SRC drivers/i2c.c drivers/gpio.c drivers/interrupts.c wiring.c)
+set(TITAN_CORE_SRC)
 
 if(MCU_TYPE MATCHES atmega32)
     list(APPEND TITAN_CORE_SRC mcus/atmega32/mcu_m32.c)
@@ -49,6 +49,8 @@ endif(MCU_TYPE MATCHES atmega32)
 if(MCU_TYPE MATCHES atmega328p)
     list(APPEND TITAN_CORE_SRC mcus/atmega328p/mcu_m328p.c)
 endif(MCU_TYPE MATCHES atmega328p)
+
+list(APPEND TITAN_CORE_SRC drivers/delay.c drivers/i2c.c drivers/gpio.c drivers/interrupts.c)
 
 ##########################################################################
 # Build titan library files

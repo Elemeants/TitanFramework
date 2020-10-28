@@ -1,11 +1,15 @@
 #include "gpio.h"
 
-void GPIO_Init(GPIO_Handler port, BaseType_t ddr_set)
+#include "mcus/include.h"
+
+extern GPIO_Def_t gpio_pins[NO_GPIO_PIN];
+
+void GPIO_HAL_PortInit(GPIO_Handler port, BaseType_t ddr_set)
 {
     port->ddr = ddr_set;
 }
 
-void GPIO_InitPin(GPIO_Handler port, BaseType_t pin, uint8_t status)
+void GPIO_HAL_PinInit(GPIO_Handler port, BaseType_t pin, uint8_t status)
 {
     switch (status)
     {
@@ -17,17 +21,17 @@ void GPIO_InitPin(GPIO_Handler port, BaseType_t pin, uint8_t status)
         break;
     case PULL_UP:
         _clear_bit(port->ddr, pin);
-        GPIO_WritePin(port, pin, HIGH);
+        GPIO_HAL_PinWrite(port, pin, HIGH);
         break;
     }
 }
 
-void GPIO_Write(GPIO_Handler port, BaseType_t port_value)
+void GPIO_HAL_PortWrite(GPIO_Handler port, BaseType_t port_value)
 {
     port->port = port_value;
 }
 
-void GPIO_WritePin(GPIO_Handler port, BaseType_t pin, uint8_t value)
+void GPIO_HAL_PinWrite(GPIO_Handler port, BaseType_t pin, uint8_t value)
 {
     if (value == 0)
     {
@@ -39,42 +43,42 @@ void GPIO_WritePin(GPIO_Handler port, BaseType_t pin, uint8_t value)
     }
 }
 
-void GPIO_Toggle(GPIO_Handler port, BaseType_t pin)
+void GPIO_HAL_PinToggle(GPIO_Handler port, BaseType_t pin)
 {
-    GPIO_WritePin(port, pin, !GPIO_ReadPin(port, pin));
+    GPIO_HAL_PinWrite(port, pin, !GPIO_HAL_PinRead(port, pin));
 }
 
-BaseType_t GPIO_Read(GPIO_Handler port)
+BaseType_t GPIO_HAL_PortRead(GPIO_Handler port)
 {
     return port->pin;
 }
 
-uint8_t GPIO_ReadPin(GPIO_Handler port, BaseType_t pin)
+uint8_t GPIO_HAL_PinRead(GPIO_Handler port, BaseType_t pin)
 {
-    return (GPIO_Read(port) & _BV(pin)) > 0;
+    return (GPIO_HAL_PortRead(port) & _BV(pin)) > 0;
 }
 
 void GPIO_PinInit(GPIO_Def_t gpio, uint8_t mode)
 {
-    GPIO_InitPin(gpio.port, gpio.no_pin, mode);
+    GPIO_HAL_PinInit(gpio.port, gpio.no_pin, mode);
 }
 
 void GPIO_PinWrite(GPIO_Def_t gpio, uint8_t value)
 {
-    GPIO_WritePin(gpio.port, gpio.no_pin, value);
+    GPIO_HAL_PinWrite(gpio.port, gpio.no_pin, value);
 }
 
 uint8_t GPIO_PinRead(GPIO_Def_t gpio)
 {
-    return GPIO_ReadPin(gpio.port, gpio.no_pin);
+    return GPIO_HAL_PinRead(gpio.port, gpio.no_pin);
 }
 
 void GPIO_PinToggle(GPIO_Def_t gpio)
 {
-    GPIO_Toggle(gpio.port, gpio.no_pin);
+    GPIO_HAL_PinToggle(gpio.port, gpio.no_pin);
 }
 
-void GPIO_PinMode(uint8_t pin, uint8_t mode)
+void pinMode(uint8_t pin, uint8_t mode)
 {
     if (pin >= NO_GPIO_PIN)
     {
@@ -82,7 +86,7 @@ void GPIO_PinMode(uint8_t pin, uint8_t mode)
     }
     GPIO_PinInit(gpio_pins[pin], mode);
 }
-void GPIO_DigitalWrite(uint8_t pin, uint8_t value)
+void digitalWrite(uint8_t pin, uint8_t value)
 {
     if (pin >= NO_GPIO_PIN)
     {
@@ -91,7 +95,7 @@ void GPIO_DigitalWrite(uint8_t pin, uint8_t value)
     GPIO_PinWrite(gpio_pins[pin], value);
 }
 
-uint8_t GPIO_DigitalRead(uint8_t pin)
+uint8_t digitalRead(uint8_t pin)
 {
     if (pin >= NO_GPIO_PIN)
     {
@@ -100,7 +104,7 @@ uint8_t GPIO_DigitalRead(uint8_t pin)
     return GPIO_PinRead(gpio_pins[pin]);
 }
 
-void GPIO_DigitalToggle(uint8_t pin)
+void digitalToggle(uint8_t pin)
 {
     if (pin >= NO_GPIO_PIN)
     {
@@ -109,7 +113,7 @@ void GPIO_DigitalToggle(uint8_t pin)
     GPIO_PinToggle(gpio_pins[pin]);
 }
 
-void GPIO_PWMWrite(uint8_t pin, uint16_t value)
+void analogWrite(uint8_t pin, uint16_t value)
 {
     if (pin >= NO_GPIO_PIN || !IS_GPIO_PWM(gpio_pins[pin].gpio_type))
     {

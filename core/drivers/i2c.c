@@ -4,11 +4,9 @@
 #include <util/twi.h>
 
 #include "gpio.h"
+#include "i2c_utils.h"
+#include "mcus/include.h"
 #include "utils/loop_utils.h"
-#include "wiring.h"
-
-#define I2C_DEFAULT_FLAGS (_BV(TWIE) | _BV(TWEN) | _BV(TWEA))
-#define I2C_FRECUENCY_CALC(frec) (((F_CPU / frec) - 16U) / 2U)
 
 void I2C_Init(I2C_BusHandler *bus)
 {
@@ -18,16 +16,16 @@ void I2C_Init(I2C_BusHandler *bus)
     }
 
     // Pullup I2C pins
-    GPIO_PinMode(I2C_SCL_PIN, PULL_UP);
-    GPIO_PinMode(I2C_SDA_PIN, PULL_UP);
+    pinMode(I2C_SCL_PIN, PULL_UP);
+    pinMode(I2C_SDA_PIN, PULL_UP);
 
     // Set bus as initiated
     bus->state = I2C_READY;
     bus->send_stop = 1;
     bus->in_rep_start = 1;
 
-    // Set frecuency
-    bus->port->_TWBR = I2C_FRECUENCY_CALC(I2C_BUS_FREQ);
+    // Set frequency
+    bus->port->_TWBR = I2C_FREQUENCY_CALC(I2C_BUS_FREQ);
     // Preset clock prescaler
     _clear_bits(bus->port->_TWSR.prescaler, 0b00);
     // Set TWI Enabled, interruption enabled and ack slave
@@ -42,8 +40,8 @@ void I2C_DeInit(I2C_BusHandler *bus)
     }
 
     _clear_bits(bus->port->_TWCR.mask, I2C_DEFAULT_FLAGS);
-    GPIO_DigitalWrite(I2C_SCL_PIN, LOW);
-    GPIO_DigitalWrite(I2C_SDA_PIN, LOW);
+    digitalWrite(I2C_SCL_PIN, LOW);
+    digitalWrite(I2C_SDA_PIN, LOW);
 }
 
 void I2C_SetAddress(I2C_BusHandler *bus, uint8_t addr)
@@ -63,7 +61,7 @@ void I2C_SetFrequency(I2C_BusHandler *bus, uint32_t frec)
         return;
     }
 
-    bus->port->_TWBR = I2C_FRECUENCY_CALC(frec);
+    bus->port->_TWBR = I2C_FREQUENCY_CALC(frec);
 }
 
 uint8_t I2C_ReadFrom(I2C_BusHandler *bus, uint8_t address, uint8_t *data, uint8_t length, uint8_t sendStop)
@@ -399,5 +397,87 @@ void I2C_ISR_Handler(I2C_BusHandler *bus)
     }
 }
 
-#undef I2C_DEFAULT_FLAGS
-#undef I2C_FRECUENCY_CALC
+#if __TITAN_DRIVERS_I2C_ENABLE1
+extern I2C_BusHandler I2CBus;
+
+void I2CBus_Init()
+{
+    I2C_Init(&I2CBus);
+}
+
+void I2CBus_DeInit()
+{
+    I2C_DeInit(&I2CBus);
+}
+
+void I2CBus_SetAddress(uint8_t addr)
+{
+    I2C_SetAddress(&I2CBus, addr);
+}
+
+void I2CBus_SetFrequency(uint32_t frec)
+{
+    I2C_SetFrequency(&I2CBus, frec);
+}
+
+uint8_t I2CBus_ReadFrom(uint8_t address, uint8_t *data, uint8_t length, uint8_t sendStop)
+{
+    return I2C_ReadFrom(&I2CBus, address, data, length, sendStop);
+}
+
+uint8_t I2CBus_WriteTo(uint8_t address, uint8_t *data, uint8_t length, uint8_t wait, uint8_t sendStop)
+{
+    return I2C_WriteTo(&I2CBus, address, data, length, wait, sendStop);
+}
+
+uint8_t I2CBus_Transmit(const uint8_t *data, uint8_t length)
+{
+    return I2C_Transmit(&I2CBus, data, length);
+}
+
+void I2CBus_AttachSlaveRxEvent(void (*function)(uint8_t len))
+{
+    I2C_AttachSlaveRxEvent(&I2CBus, function);
+}
+
+void I2CBus_AttachSlaveTxEvent(void (*function)(void))
+{
+    I2C_AttachSlaveTxEvent(&I2CBus, function);
+}
+
+void I2CBus_Reply(uint8_t ack)
+{
+    I2C_Reply(&I2CBus, ack);
+}
+
+void I2CBus_Stop()
+{
+    I2C_Stop(&I2CBus);
+}
+
+void I2CBus_ReleaseBus()
+{
+    I2C_ReleaseBus(&I2CBus);
+}
+
+I2C_BusHandler I2CBus = {
+    .port = TWI0_Register,
+    .state = 0b00,
+    .send_stop = 0b0,
+    .in_rep_start = 0b0,
+    .error = 0b0,
+    .sla_rw.raw = 0x00,
+    .Init = I2CBus_Init,
+    .DeInit = I2CBus_DeInit,
+    .SetAddress = I2CBus_SetAddress,
+    .SetFrequency = I2CBus_SetFrequency,
+    .ReadFrom = I2CBus_ReadFrom,
+    .WriteTo = I2CBus_WriteTo,
+    .Transmit = I2CBus_Transmit,
+    .AttachSlaveRxEvent = I2CBus_AttachSlaveRxEvent,
+    .AttachSlaveTxEvent = I2CBus_AttachSlaveTxEvent,
+    .Reply = I2CBus_Reply,
+    .Stop = I2CBus_Stop,
+    .ReleaseBus = I2CBus_ReleaseBus,
+};
+#endif

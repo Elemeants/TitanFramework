@@ -1,15 +1,43 @@
-#if !defined(MCUS_WIRING_328P_H)
-#define MCUS_WIRING_328P_H
+/**
+ * @file mcu_m328p.h
+ * @author Daniel Polanco (jdanypa@gmail.com)
+ * @brief Atmega328p microcontroller target header file
+ * When Titan target is Atmega328p this headers includes and configures everything
+ * to work, and defines high abstraction definitions
+ * 
+ * @date 2020-10-27
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+#if !defined(__TITAN_MCUS_ATMEGA328P_H)
+#define __TITAN_MCUS_ATMEGA328P_H
 
-#include "platform.h"
+#include "../mcu_common.h"
 
 #ifdef __cplusplus
-extern "C" {
-#endif // !__cplusplus
+extern "C"
+{
+#endif  // !__cplusplus
 
 #ifdef __AVR_ATmega328P__
 
-#define NO_GPIO_PIN 20
+// Enables I2C 1 peripheral
+#define __TITAN_DRIVERS_I2C_ENABLE1 1
+/**
+ * @brief Number of digital pins in the microcontroller
+ * 
+ */
+#define NO_DIGITAL_PINS 13
+/**
+ * @brief Number of analog pins in the microcontroller
+ * 
+ */
+#define NO_ANALOG_PINS 6
+
+#define NO_GPIO_PIN (NO_DIGITAL_PINS + NO_ANALOG_PINS)
+
+// ------------------- MCU Pin macros -------------------
 
 /**
  * @brief Digital pin 0 - GPIO D 0
@@ -86,7 +114,6 @@ extern "C" {
  */
 #define A0 0
 
-// ------------------- MCU Pin macros -------------------
 /**
  * @brief Analog 1 | Digital 15 - GPIOC 1
  */
@@ -152,29 +179,62 @@ extern "C" {
 #define NO_HW_INTERRUPTS 3
 #define NO_SW_INTERRUPTS 10
 
+/**
+ * @brief INT0 Hardware interrupt pin reference
+ * 
+ */
 #define HW_INT0_PIN D2
-#define HW_INT1_PIN D3
-#define HW_INT2_PIN D18
 
-typedef struct
-{
-    __IO BaseType_t en_int0 : 1;
-    __IO BaseType_t en_int1 : 1;
-    __IO BaseType_t RESERVED : 6;
-} HW_INT_EnRegister_t;
+/**
+ * @brief INT1 Hardware interrupt pin reference
+ * 
+ */
+#define HW_INT1_PIN D3
+
+    /**
+ * @brief Atmega328p Microcontroller specific hardware interrupt control register
+ * 
+ */
+    typedef struct
+    {
+        __IO BaseType_t en_int0 : 1;
+        __IO BaseType_t en_int1 : 1;
+        __IO BaseType_t RESERVED : 6;
+    } HW_INT_EnRegister_t;
 
 #define INT_ControlRegister ((volatile HW_INT_CtrlRegister_t*)(0x69))
 #define INT_EnableRegister ((volatile HW_INT_EnRegister_t*)(0x1D))
 
-void ISR_INT0_Init(uint8_t mode);
-void ISR_INT1_Init(uint8_t mode);
-void ISR_INT0_DeInit();
-void ISR_INT1_DeInit();
+    /**
+ * @brief Initalizes INT0 hardware interrupt
+ * 
+ * @param mode ISR Mode
+ */
+    void ISR_INT0_Init(uint8_t mode);
+
+    /**
+ * @brief Initalizes INT1 hardware interrupt
+ * 
+ * @param mode ISR Mode
+ */
+    void ISR_INT1_Init(uint8_t mode);
+
+    /**
+ * @brief Deinitializes INT0 hardware interrupt
+ * 
+ */
+    void ISR_INT0_DeInit();
+
+    /**
+ * @brief Deinitializes INT1 hardware interrupt
+ * 
+ */
+    void ISR_INT1_DeInit();
 
 #endif
 
 #ifdef __cplusplus
 }
-#endif // !__cplusplus
+#endif  // !__cplusplus
 
-#endif  // MCUS_WIRING_328P_H
+#endif  // __TITAN_MCUS_ATMEGA328P_H

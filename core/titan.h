@@ -1,21 +1,11 @@
-#if !defined(TITAN_HAL_H)
-#define TITAN_HAL_H
+#if !defined(__TITAN_FRAMEWORK_H)
+#define __TITAN_FRAMEWORK_H
 
-#include "wiring.h"
+#include "drivers/delay.h"
+#include "drivers/gpio.h"
+#include "drivers/i2c.h"
+#include "drivers/interrupts.h"
+#include "mcus/include.h"
 #include "platform.h"
 
-#include "drivers/interrupts.h"
-#include "drivers/gpio.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif // !__cplusplus
-
-extern void delay_ms(uint32_t _ms);
-extern void delay_us(uint32_t _us);
-
-#ifdef __cplusplus
-}
-#endif // !__cplusplus
-
-#endif // TITAN_HAL_H
+#endif  // __TITAN_FRAMEWORK_H
