@@ -1,17 +1,7 @@
 #if !defined(__TITAN_DRIVERS_UART_DEFS_H)
 #define __TITAN_DRIVERS_UART_DEFS_H
 
-#ifndef __TESTS
 #include "platform.h"
-#else
-#ifndef F_CPU
-#define F_CPU 8000000UL
-#endif
-
-#define __IO volatile
-#define __I volatile const
-#define __O volatile
-#endif
 
 #ifdef __cplusplus
 extern "C"
@@ -93,7 +83,7 @@ extern "C"
 #define __USART_UBRR_ASYNC_U2X_BAUD(__ubbr) __USART_UBBR_BAUD(__baud, 8)
 #define __USART_UBRR_SYNC_BAUD(__ubbr) __USART_UBBR_BAUD(__baud, 8)
 
-#define __USART_UBBR_ERROR(__ubbr, __factor, __expected_baud) (100.0F * (( (float)__USART_UBBR_BAUD(__ubbr, __factor) / __expected_baud) - 1))
+#define __USART_UBBR_ERROR(__ubbr, __factor, __expected_baud) (100.0F * (((float)__USART_UBBR_BAUD(__ubbr, __factor) / __expected_baud) - 1))
 
 #define __USART_UBRR_ASYNC_ERROR(__ubbr, __expected_baud) __USART_UBBR_ERROR(__ubbr, 16, __expected_baud)
 #define __USART_UBRR_ASYNC_U2X_ERROR(__ubbr, __expected_baud) __USART_UBBR_ERROR(__ubbr, 8, __expected_baud)
@@ -103,7 +93,7 @@ extern "C"
     (__USART_UBRR_ASYNC_ERROR(__USART_UBRR_ASYNC_CALC(__baud), __baud) > __USART_UBRR_ASYNC_U2X_ERROR(__USART_UBRR_ASYNC_U2X_CALC(__baud), __baud))
 #define __USART_UBBR_OPTIME_VALUE(__baud)                                                                                                          \
     (__USART_UBRR_ASYNC_ERROR(__USART_UBRR_ASYNC_CALC(__baud), __baud) > __USART_UBRR_ASYNC_U2X_ERROR(__USART_UBRR_ASYNC_U2X_CALC(__baud), __baud) \
-         ? __USART_UBRR_ASYNC_U2X_CALC(__baud)                                                                                                         \
+         ? __USART_UBRR_ASYNC_U2X_CALC(__baud)                                                                                                     \
          : __USART_UBRR_ASYNC_CALC(__baud))
 
 #ifdef __cplusplus
