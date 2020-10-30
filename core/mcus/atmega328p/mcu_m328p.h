@@ -22,6 +22,7 @@ extern "C"
 
 #ifdef __AVR_ATmega328P__
 
+#define __USART_1_ENABLED 1
 // Enables I2C 1 peripheral
 #define __TITAN_DRIVERS_I2C_ENABLE1 1
 /**
@@ -112,42 +113,42 @@ extern "C"
 /**
  * @brief Analog 0 | Digital 14 - GPIOC 0
  */
-#define A0 0
+#define A0 NO_DIGITAL_PINS
 
 /**
  * @brief Analog 1 | Digital 15 - GPIOC 1
  */
-#define A1 1
+#define A1 (NO_DIGITAL_PINS + 1)
 
 /**
  * @brief Analog 2 | Digital 16 - GPIOC 2
  */
-#define A2 2
+#define A2 (NO_DIGITAL_PINS + 2)
 
 /**
  * @brief Analog 3 | Digital 17 - GPIOC 3
  */
-#define A3 3
+#define A3 (NO_DIGITAL_PINS + 3)
 
 /**
  * @brief Analog 4 | Digital 18 - GPIOC 4
  */
-#define A4 4
+#define A4 (NO_DIGITAL_PINS + 4)
 
 /**
  * @brief Analog 5 | Digital 19 - GPIOC 5
  */
-#define A5 5
+#define A5 (NO_DIGITAL_PINS + 5)
 
 // ------------------- MCU Bus macros -------------------
 /**
- * @brief UART TX | Digital 0
+ * @brief UART TX | Digital 1
  */
-#define UART_TX_PIN D0
+#define UART_TX_PIN D1
 /**
- * @brief UART RX | Digital 1
+ * @brief UART RX | Digital 0
  */
-#define UART_RX_PIN D1
+#define UART_RX_PIN D0
 
 /**
  * @brief SPI SS | Digital 10

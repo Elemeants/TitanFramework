@@ -22,6 +22,7 @@ extern "C"
 
 #ifdef __AVR_ATmega32__
 
+#define __USART_1_ENABLED 1
 // Enables I2C 1 peripheral
 #define __TITAN_DRIVERS_I2C_ENABLE1 1
 /**
@@ -202,11 +203,11 @@ extern "C"
 /**
  * @brief UART TX | Digital 0
  */
-#define UART_TX_PIN D0
+#define UART_RX_PIN D0
 /**
  * @brief UART RX | Digital 1
  */
-#define UART_RX_PIN D1
+#define UART_TX_PIN D1
 
 /**
  * @brief SPI SS | Digital 20
