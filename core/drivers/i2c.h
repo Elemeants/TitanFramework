@@ -116,10 +116,10 @@ extern "C"
          */
         uint8_t masterBuffer_index;
         /**
-         * @brief Master I2C Buffer circular lenght
+         * @brief Master I2C Buffer circular length
          * 
          */
-        uint8_t masterBuffer_lenght;
+        uint8_t masterBuffer_length;
 
         /**
          * @brief Tx I2C Buffer used as circular buffer
@@ -132,10 +132,10 @@ extern "C"
          */
         uint8_t txBuffer_index;
         /**
-         * @brief Tx I2C Buffer circular buffer lenght
+         * @brief Tx I2C Buffer circular buffer length
          * 
          */
-        uint8_t txBuffer_lenght;
+        uint8_t txBuffer_length;
 
         /**
          * @brief Rx I2C Buffer used as circular buffer
@@ -148,10 +148,10 @@ extern "C"
          */
         uint8_t rxBuffer_index;
         /**
-         * @brief Rx I2C Buffer circular buffer lenght
+         * @brief Rx I2C Buffer circular buffer length
          * 
          */
-        uint8_t rxBuffer_lenght;
+        uint8_t rxBuffer_length;
 
         /**
          * @brief Rx event I2C Buffer used as circular buffer
@@ -164,17 +164,17 @@ extern "C"
          */
         uint8_t rxEventBuff_index;
         /**
-         * @brief Rx event I2C Buffer circular buffer lenght
+         * @brief Rx event I2C Buffer circular buffer length
          * 
          */
-        uint8_t rxEventBuff_lenght;
+        uint8_t rxEventBuff_length;
 
         /**
          * @brief Pointer to Rx event function
          * 
          * @param length Number of bytes received
          */
-        void (*rxEvent)(uint8_t lenght);
+        void (*rxEvent)(uint8_t length);
 
         /**
          * @brief Pointer to Tx event function
@@ -296,7 +296,7 @@ extern "C"
  * @param bus bus handler structs
  * @param address slave device address
  * @param data buffer of bytes
- * @param length lenght of the buffer
+ * @param length length of the buffer
  * @param sendStop send stop flag
  * @return uint8_t number of bytes readed
  */
@@ -308,7 +308,7 @@ extern "C"
  * @param bus bus handler structs
  * @param address slave device address
  * @param data buffer of bytes
- * @param length lenght of the buffer
+ * @param length length of the buffer
  * @param wait 
  * @param sendStop send stop flag
  * @return uint8_t number of bytes writted
@@ -320,7 +320,7 @@ extern "C"
  * 
  * @param bus bus handler structs
  * @param data buffer of bytes
- * @param length lenght of the buffer
+ * @param length length of the buffer
  * @return uint8_t number of bytes writted
  */
     uint8_t I2C_Transmit(I2C_BusHandler *bus, const uint8_t *data, uint8_t length);
@@ -331,7 +331,7 @@ extern "C"
  * @param bus bus handler structs
  * @param function rx event on received
  */
-    void I2C_AttachSlaveRxEvent(I2C_BusHandler *bus, void (*function)(uint8_t lenght));
+    void I2C_AttachSlaveRxEvent(I2C_BusHandler *bus, void (*function)(uint8_t length));
 
     /**
  * @brief 

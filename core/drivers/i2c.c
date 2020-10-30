@@ -94,7 +94,7 @@ uint8_t I2C_Transmit(I2C_BusHandler *bus, const uint8_t *data, uint8_t length)
     return 0x00;
 }
 
-void I2C_AttachSlaveRxEvent(I2C_BusHandler *bus, void (*function)(uint8_t lenght))
+void I2C_AttachSlaveRxEvent(I2C_BusHandler *bus, void (*function)(uint8_t length))
 {
     if (bus == NULL)
     {
@@ -168,7 +168,7 @@ uint8_t I2C_ReadNextByte(I2C_BusHandler *bus)
     int value = -1;
 
     // get each successive byte on each call
-    if (bus->rxEventBuff_index < bus->rxEventBuff_lenght)
+    if (bus->rxEventBuff_index < bus->rxEventBuff_length)
     {
         value = bus->rxEventBuff[bus->rxEventBuff_index];
         ++bus->rxEventBuff_index;
@@ -196,7 +196,7 @@ void I2C_rxEventHandler(I2C_BusHandler *bus, uint8_t *inBytes, int numBytes)
     // don't bother if rx buffer is in use by a master requestFrom() op
     // i know this drops data, but it allows for slight stupidity
     // meaning, they may not have read all the master requestFrom() data yet
-    if (bus->rxEventBuff_index < bus->rxEventBuff_lenght)
+    if (bus->rxEventBuff_index < bus->rxEventBuff_length)
     {
         return;
     }
@@ -208,7 +208,7 @@ void I2C_rxEventHandler(I2C_BusHandler *bus, uint8_t *inBytes, int numBytes)
     }
     // set rx iterator vars
     bus->rxEventBuff_index = 0;
-    bus->rxEventBuff_lenght = numBytes;
+    bus->rxEventBuff_length = numBytes;
 
     if (bus->rxEvent)
         bus->rxEvent(numBytes);
@@ -233,7 +233,7 @@ void I2C_ISR_Handler(I2C_BusHandler *bus)
     case TW_MT_SLA_ACK:   // slave receiver acked address
     case TW_MT_DATA_ACK:  // slave receiver acked data
         // if there is data to send, send it, otherwise stop
-        if (bus->masterBuffer_index < bus->masterBuffer_lenght)
+        if (bus->masterBuffer_index < bus->masterBuffer_length)
         {
             // copy data to output register and ack
             TWDR = bus->masterBuffer[bus->masterBuffer_index++];
@@ -273,7 +273,7 @@ void I2C_ISR_Handler(I2C_BusHandler *bus)
         bus->masterBuffer[bus->masterBuffer_index++] = bus_register->_TWDR;
     case TW_MR_SLA_ACK:  // address sent, ack received
         // ack if more bytes are expected, otherwise nack
-        if (bus->masterBuffer_index < bus->masterBuffer_lenght)
+        if (bus->masterBuffer_index < bus->masterBuffer_length)
         {
             I2C_Reply(bus, 1);
         }
@@ -355,14 +355,14 @@ void I2C_ISR_Handler(I2C_BusHandler *bus)
         // ready the tx buffer index for iteration
         bus->txBuffer_index = 0;
         // set tx buffer length to be zero, to verify if user changes it
-        bus->rxBuffer_lenght = 0;
+        bus->rxBuffer_length = 0;
         // request for txBuffer to be filled and length to be set
         // note: user must call twi_transmit(bytes, length) to do this
         I2C_txEventHandler(bus);
         // if they didn't change buffer & length, initialize it
-        if (0 == bus->rxBuffer_lenght)
+        if (0 == bus->rxBuffer_length)
         {
-            bus->rxBuffer_lenght = 1;
+            bus->rxBuffer_length = 1;
             bus->txBuffer[0] = 0x00;
         }
         // transmit first byte from buffer, fall
@@ -370,7 +370,7 @@ void I2C_ISR_Handler(I2C_BusHandler *bus)
         // copy data to output register
         bus_register->_TWDR = bus->txBuffer[bus->txBuffer_index++];
         // if there is more to send, ack, otherwise nack
-        if (bus->txBuffer_index < bus->rxBuffer_lenght)
+        if (bus->txBuffer_index < bus->rxBuffer_length)
         {
             I2C_Reply(bus, 1);
         }
