@@ -5,6 +5,7 @@
 #include "drivers/gpio.h"
 #include "drivers/i2c.h"
 #include "drivers/interrupts.h"
+#include "drivers/uart.h"
 #include "mcus/include.h"
 #include "platform.h"
 

@@ -50,7 +50,7 @@ if(MCU_TYPE MATCHES atmega328p)
     list(APPEND TITAN_CORE_SRC mcus/atmega328p/mcu_m328p.c)
 endif(MCU_TYPE MATCHES atmega328p)
 
-list(APPEND TITAN_CORE_SRC drivers/delay.c drivers/i2c.c drivers/gpio.c drivers/interrupts.c)
+list(APPEND TITAN_CORE_SRC drivers/delay.c drivers/i2c.c drivers/gpio.c drivers/interrupts.c drivers/uart.c)
 
 ##########################################################################
 # Build titan library files
