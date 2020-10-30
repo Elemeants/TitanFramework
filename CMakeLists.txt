@@ -19,8 +19,8 @@ set(CMAKE_CXX_COMPILER ${AVR_CXX})
 ##########################################################################
 # Project specific microcontroller settings
 ##########################################################################
-set(MCU_SPEED 1000000)
-set(MCU_TYPE atmega328p)
+set(MCU_SPEED 8000000)
+set(MCU_TYPE atmega32)
 set(MCU_PROGRAMMER usbasp)
 set(MCU_LFUSE 0xE4)
 set(MCU_HFUSE 0xD1)
@@ -35,7 +35,7 @@ add_compile_options(
     -DF_CPU=${MCU_SPEED}
     -Wall
     -Os
-    -g 
+    -g
     -fsigned-char
     -funsigned-bitfields
     -fpack-struct
@@ -74,12 +74,13 @@ add_custom_target(
 ##########################################################################
 # Build project
 ##########################################################################
-add_executable(ExampleTitan src/main.cpp)
+add_executable(ExampleTitan src/main.c)
 
 target_link_libraries(ExampleTitan PUBLIC TitanCore)
 target_include_directories(ExampleTitan PUBLIC
                           "${PROJECT_SOURCE_DIR}"
                           "${PROJECT_SOURCE_DIR}/core"
+                          "/usr/include/simavr/avr"
                           )
 
 add_custom_command(
