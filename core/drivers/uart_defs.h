@@ -47,9 +47,17 @@ extern "C"
         __I uint16_t reserved : 4;
     };
 
+    union USART_DataRegister_t
+    {
+        __I uint8_t read;
+        __O uint8_t write;
+    };
+
     typedef struct USART_ControlRegisterA_t USART_ControlRegisterA_t;
     typedef struct USART_ControlRegisterB_t USART_ControlRegisterB_t;
     typedef struct USART_ControlRegisterC_t USART_ControlRegisterC_t;
+    typedef struct USART_BaudrateRegister_t USART_BaudrateRegister_t;
+    typedef union USART_DataRegister_t USART_DataRegister_t;
 
 #define __USART_MODE_ASYNC 0b00
 #define __USART_MODE_SYNC 0b01
@@ -95,6 +103,22 @@ extern "C"
     (__USART_UBRR_ASYNC_ERROR(__USART_UBRR_ASYNC_CALC(__baud), __baud) > __USART_UBRR_ASYNC_U2X_ERROR(__USART_UBRR_ASYNC_U2X_CALC(__baud), __baud) \
          ? __USART_UBRR_ASYNC_U2X_CALC(__baud)                                                                                                     \
          : __USART_UBRR_ASYNC_CALC(__baud))
+
+#ifndef __USART_BUFFER_LENGTH
+#define __USART_BUFFER_LENGTH 32
+#endif
+
+    struct USART_Handler_t
+    {
+        char rx_buffer[__USART_BUFFER_LENGTH];
+
+        __IO USART_ControlRegisterA_t *CtrlRegA;
+        __IO USART_ControlRegisterB_t *CtrlRegB;
+        __IO USART_ControlRegisterC_t *CtrlRegC;
+        __IO USART_BaudrateRegister_t *BaudReg;
+        __IO USART_DataRegister_t *DataRegister;
+    };
+    typedef struct USART_Handler_t USART_Handler_t;
 
 #ifdef __cplusplus
 }
